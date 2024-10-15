@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:precapstone/main_screen.dart';
+import 'package:precapstone/sign_up_screen.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -71,7 +73,14 @@ class LoginPage extends StatelessWidget {
                   width: isWeb ? 500 : double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MainPage(),
+                        ),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: const Color(0xFF4157F5),
                       backgroundColor: const Color(0xFF98A5FF),
@@ -93,7 +102,13 @@ class LoginPage extends StatelessWidget {
                   width: isWeb ? 500 : double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignUpPage()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       foregroundColor: const Color(0xFF4157F5),
                       backgroundColor: const Color(0xFFCCD2FF),
