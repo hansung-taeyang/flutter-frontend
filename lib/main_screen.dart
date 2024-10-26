@@ -46,6 +46,7 @@ class _MainPageState extends State<MainPage> {
 
       body: _screens[_selectedIndex], // 현재 선택된 화면 보여줌
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: const Color(0xFFF5F5F5),
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.send),
@@ -72,9 +73,9 @@ class _MainPageState extends State<MainPage> {
   String _getAppBarTitle(int index) {
     switch (index) {
       case 0:
-        return '문자 기록 조회';
-      case 1:
         return '문자 보내기';
+      case 1:
+        return '문자 기록 조회';
       case 2:
         return '내 정보';
       default:
