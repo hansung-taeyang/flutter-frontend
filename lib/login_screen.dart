@@ -10,6 +10,13 @@ class LoginPage extends StatelessWidget {
     var screenSize = MediaQuery.of(context).size;
     var isWeb = screenSize.width > 600; // 화면 너비 600px 이상일 경우 웹으로 간주
 
+    OutlineInputBorder _buildRoundedInputBorder() {
+      return OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30.0),
+        borderSide: BorderSide.none, // 투명한 테두리로 설정
+      );
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: const Color(0xFFF2F2F2),
@@ -34,15 +41,10 @@ class LoginPage extends StatelessWidget {
                       hintText: '이메일',
                       filled: true,
                       fillColor: Colors.white,
+                      hoverColor: Color(0xFFE3E3E3),
                       border: InputBorder.none,
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                        borderSide: const BorderSide(color: Colors.transparent),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                        borderSide: const BorderSide(color: Colors.transparent),
-                      ),
+                      enabledBorder: _buildRoundedInputBorder(),
+                      focusedBorder: _buildRoundedInputBorder(),
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
@@ -56,6 +58,7 @@ class LoginPage extends StatelessWidget {
                       hintText: '비밀번호',
                       filled: true,
                       fillColor: Colors.white,
+                      hoverColor: Color(0xFFE3E3E3),
                       border: InputBorder.none,
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
