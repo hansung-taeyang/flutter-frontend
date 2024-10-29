@@ -11,13 +11,6 @@ class LoginPage extends StatelessWidget {
     var screenSize = MediaQuery.of(context).size;
     var isWeb = screenSize.width > 600; // 화면 너비 600px 이상일 경우 웹으로 간주
 
-    OutlineInputBorder _buildRoundedInputBorder() {
-      return OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30.0),
-        borderSide: BorderSide.none, // 투명한 테두리로 설정
-      );
-    }
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: BACKFROUND_COLOR,
