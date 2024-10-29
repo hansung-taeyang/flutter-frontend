@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:precapstone/first_screen.dart';
-import 'package:precapstone/second_screen.dart';
-import 'package:precapstone/third_screen.dart';
+import 'package:precapstone/send_message/first_screen.dart';
+import '../message_history/second_screen.dart';
+import '../my_info/third_screen.dart';
+import '../const/colors.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -30,15 +31,15 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF4157F5),
-        title: Padding(
+        backgroundColor: DEEP_BLUE_COLOR,
+          title: Padding(
           padding: const EdgeInsets.only(top: 10.0), // 텍스트를 아래로 내림
           child: Text(
             _getAppBarTitle(_selectedIndex),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 24,
-              color: Colors.white,
+              color: WHITE_COLOR
             ),
           ),
         ),
@@ -62,7 +63,7 @@ class _MainPageState extends State<MainPage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: const Color(0xFF4157F5),
+        selectedItemColor: DEEP_BLUE_COLOR,
         onTap: _onItemTapped,
         showSelectedLabels: false, // 선택된 항목의 라벨 숨김
         showUnselectedLabels: false, // 선택되지 않은 항목의 라벨 숨김

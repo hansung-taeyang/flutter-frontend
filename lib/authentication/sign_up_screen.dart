@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:precapstone/const/colors.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -40,8 +41,8 @@ class SignUpPage extends StatelessWidget {
                         decoration: InputDecoration(
                           hintText: '아이디(이메일)',
                           filled: true,
-                          fillColor: Colors.white,
-                          hoverColor: Color(0xFFE3E3E3),
+                          fillColor: WHITE_COLOR,
+                          hoverColor: INPUT_HOVER_COLOR,
                           border: InputBorder.none,
                           enabledBorder: _buildRoundedInputBorder(),
                           focusedBorder: _buildRoundedInputBorder(),
@@ -53,8 +54,8 @@ class SignUpPage extends StatelessWidget {
                     ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: const Color(0xFF4157F5),
-                        backgroundColor: const Color(0xFFCCD2FF),
+                        foregroundColor: DEEP_BLUE_COLOR,
+                        backgroundColor: LIGHT_BLUE_COLOR,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50.0),
                         ),
@@ -78,8 +79,8 @@ class SignUpPage extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: '비밀번호(6-15자 영문/숫자/특수문자 조합)',
                     filled: true,
-                    fillColor: Colors.white,
-                    hoverColor: Color(0xFFE3E3E3),
+                    fillColor: WHITE_COLOR,
+                    hoverColor: INPUT_HOVER_COLOR,
                     border: InputBorder.none,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -100,8 +101,8 @@ class SignUpPage extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: '비밀번호 확인',
                     filled: true,
-                    fillColor: Colors.white,
-                    hoverColor: Color(0xFFE3E3E3),
+                    fillColor: WHITE_COLOR,
+                    hoverColor: INPUT_HOVER_COLOR,
                     border: InputBorder.none,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -122,8 +123,8 @@ class SignUpPage extends StatelessWidget {
                   decoration: InputDecoration(
                     hintText: '휴대폰 번호',
                     filled: true,
-                    fillColor: Colors.white,
-                    hoverColor: Color(0xFFE3E3E3),
+                    fillColor: WHITE_COLOR,
+                    hoverColor: INPUT_HOVER_COLOR,
                     border: InputBorder.none,
                     enabledBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
@@ -145,8 +146,8 @@ class SignUpPage extends StatelessWidget {
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    foregroundColor: const Color(0xFF4157F5),
-                    backgroundColor: const Color(0xFF98A5FF),
+                    foregroundColor: DEEP_BLUE_COLOR,
+                    backgroundColor: NORMAL_BLUE_COLOR,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(50.0),
                     ),
