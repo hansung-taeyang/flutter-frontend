@@ -13,7 +13,7 @@ class LoginPage extends StatelessWidget {
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: BACKFROUND_COLOR,
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(20.0, 150.0, 20.0, 20.0),
@@ -34,8 +34,8 @@ class LoginPage extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: '이메일',
                       filled: true,
-                      fillColor: WHITE_COLOR,
-                      hoverColor: INPUT_HOVER_COLOR,
+                      fillColor: whiteColor,
+                      hoverColor: inputHoverColor,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                         borderSide: BorderSide.none,
@@ -52,8 +52,8 @@ class LoginPage extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: '비밀번호',
                       filled: true,
-                      fillColor: WHITE_COLOR,
-                      hoverColor: INPUT_HOVER_COLOR,
+                      fillColor: whiteColor,
+                      hoverColor: inputHoverColor,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
                         borderSide: BorderSide.none,
@@ -75,8 +75,8 @@ class LoginPage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: DEEP_BLUE_COLOR,
-                      backgroundColor: NORMAL_BLUE_COLOR,
+                      foregroundColor: deepBlueColor,
+                      backgroundColor: normalBlueColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0),
                       ),
@@ -103,8 +103,8 @@ class LoginPage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: DEEP_BLUE_COLOR,
-                      backgroundColor: LIGHT_BLUE_COLOR,
+                      foregroundColor: deepBlueColor,
+                      backgroundColor: lightBlueColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0),
                       ),
