@@ -9,13 +9,6 @@ class SignUpPage extends StatelessWidget {
     var screenSize = MediaQuery.of(context).size;
     var isWeb = screenSize.width > 600; // 화면 너비 600px 이상일 경우 웹으로 간주
 
-    OutlineInputBorder _buildRoundedInputBorder() {
-      return OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30.0),
-        borderSide: BorderSide.none, // 투명한 테두리로 설정
-      );
-    }
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
       backgroundColor: const Color(0xFFF2F2F2),
@@ -43,9 +36,10 @@ class SignUpPage extends StatelessWidget {
                           filled: true,
                           fillColor: WHITE_COLOR,
                           hoverColor: INPUT_HOVER_COLOR,
-                          border: InputBorder.none,
-                          enabledBorder: _buildRoundedInputBorder(),
-                          focusedBorder: _buildRoundedInputBorder(),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30.0),
+                            borderSide: BorderSide.none,
+                          ),
                         ),
                         keyboardType: TextInputType.emailAddress,
                       ),
@@ -81,14 +75,9 @@ class SignUpPage extends StatelessWidget {
                     filled: true,
                     fillColor: WHITE_COLOR,
                     hoverColor: INPUT_HOVER_COLOR,
-                    border: InputBorder.none,
-                    enabledBorder: OutlineInputBorder(
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(color: Colors.transparent),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(color: Colors.transparent),
+                      borderSide: BorderSide.none,
                     ),
                   ),
                 ),
@@ -103,14 +92,9 @@ class SignUpPage extends StatelessWidget {
                     filled: true,
                     fillColor: WHITE_COLOR,
                     hoverColor: INPUT_HOVER_COLOR,
-                    border: InputBorder.none,
-                    enabledBorder: OutlineInputBorder(
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(color: Colors.transparent),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(color: Colors.transparent),
+                      borderSide: BorderSide.none,
                     ),
                   ),
                 ),
@@ -125,14 +109,9 @@ class SignUpPage extends StatelessWidget {
                     filled: true,
                     fillColor: WHITE_COLOR,
                     hoverColor: INPUT_HOVER_COLOR,
-                    border: InputBorder.none,
-                    enabledBorder: OutlineInputBorder(
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(color: Colors.transparent),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0),
-                      borderSide: const BorderSide(color: Colors.transparent),
+                      borderSide: BorderSide.none,
                     ),
                   ),
                 ),

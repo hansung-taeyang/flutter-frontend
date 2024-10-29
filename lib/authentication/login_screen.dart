@@ -43,9 +43,10 @@ class LoginPage extends StatelessWidget {
                       filled: true,
                       fillColor: WHITE_COLOR,
                       hoverColor: INPUT_HOVER_COLOR,
-                      border: InputBorder.none,
-                      enabledBorder: _buildRoundedInputBorder(),
-                      focusedBorder: _buildRoundedInputBorder(),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: BorderSide.none,
+                      ),
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
@@ -60,14 +61,9 @@ class LoginPage extends StatelessWidget {
                       filled: true,
                       fillColor: WHITE_COLOR,
                       hoverColor: INPUT_HOVER_COLOR,
-                      border: InputBorder.none,
-                      enabledBorder: OutlineInputBorder(
+                      border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
-                        borderSide: const BorderSide(color: Colors.transparent),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                        borderSide: const BorderSide(color: Colors.transparent),
+                        borderSide: BorderSide.none,
                       ),
                     ),
                   ),
