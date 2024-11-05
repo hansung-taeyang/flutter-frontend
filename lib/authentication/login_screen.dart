@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:precapstone/main_screen.dart';
-import 'package:precapstone/sign_up_screen.dart';
+import 'package:precapstone/const/colors.dart';
+import 'package:precapstone/home/main_screen.dart';
+import 'package:precapstone/authentication/sign_up_screen.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -10,16 +11,9 @@ class LoginPage extends StatelessWidget {
     var screenSize = MediaQuery.of(context).size;
     var isWeb = screenSize.width > 600; // 화면 너비 600px 이상일 경우 웹으로 간주
 
-    OutlineInputBorder _buildRoundedInputBorder() {
-      return OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30.0),
-        borderSide: BorderSide.none, // 투명한 테두리로 설정
-      );
-    }
-
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: const Color(0xFFF2F2F2),
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.fromLTRB(20.0, 150.0, 20.0, 20.0),
@@ -40,11 +34,12 @@ class LoginPage extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: '이메일',
                       filled: true,
-                      fillColor: Colors.white,
-                      hoverColor: Color(0xFFE3E3E3),
-                      border: InputBorder.none,
-                      enabledBorder: _buildRoundedInputBorder(),
-                      focusedBorder: _buildRoundedInputBorder(),
+                      fillColor: whiteColor,
+                      hoverColor: inputHoverColor,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: BorderSide.none,
+                      ),
                     ),
                     keyboardType: TextInputType.emailAddress,
                   ),
@@ -57,16 +52,11 @@ class LoginPage extends StatelessWidget {
                     decoration: InputDecoration(
                       hintText: '비밀번호',
                       filled: true,
-                      fillColor: Colors.white,
-                      hoverColor: Color(0xFFE3E3E3),
-                      border: InputBorder.none,
-                      enabledBorder: OutlineInputBorder(
+                      fillColor: whiteColor,
+                      hoverColor: inputHoverColor,
+                      border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30.0),
-                        borderSide: const BorderSide(color: Colors.transparent),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30.0),
-                        borderSide: const BorderSide(color: Colors.transparent),
+                        borderSide: BorderSide.none,
                       ),
                     ),
                   ),
@@ -85,8 +75,8 @@ class LoginPage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: const Color(0xFF4157F5),
-                      backgroundColor: const Color(0xFF98A5FF),
+                      foregroundColor: deepBlueColor,
+                      backgroundColor: normalBlueColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0),
                       ),
@@ -113,8 +103,8 @@ class LoginPage extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: const Color(0xFF4157F5),
-                      backgroundColor: const Color(0xFFCCD2FF),
+                      foregroundColor: deepBlueColor,
+                      backgroundColor: lightBlueColor,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50.0),
                       ),

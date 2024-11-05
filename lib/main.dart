@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
+import 'authentication/login_screen.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 
