@@ -10,7 +10,7 @@ class SecondPage extends StatefulWidget {
 
 class _SecondPageState extends State<SecondPage> {
   int? selectedIndex; // 선택된 항목의 인덱스를 저장하는 변수
-  List<int> items = List.generate(10, (index) => index); // 30개의 항목 생성
+  List<int> items = List.generate(10, (index) => index); // 10개의 항목 생성
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +46,9 @@ class _SecondPageState extends State<SecondPage> {
                       selectedIndex = null; // 선택 해제
                     });
                   },
+                  onViewRecipients: () {
+                    _showRecipientsDialog(context); // 수신자 리스트 팝업 표시
+                  },
                 ),
               );
             },
@@ -54,13 +57,51 @@ class _SecondPageState extends State<SecondPage> {
       ),
     );
   }
+
+  // 수신자 리스트 팝업 다이얼로그
+  void _showRecipientsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("수신자 명단"),
+          content: Container(
+            width: double.maxFinite,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: 5, // 예시로 5명의 수신자 리스트
+              itemBuilder: (context, index) {
+                return ListTile(
+                  leading: Icon(Icons.person),
+                  title: Text("수신자 ${index + 1}"),
+                );
+              },
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // 팝업 닫기
+              },
+              child: Text("닫기"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
 
 class MessageListItem extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onDelete;
+  final VoidCallback onViewRecipients;
 
-  MessageListItem({required this.isSelected, required this.onDelete});
+  MessageListItem({
+    required this.isSelected,
+    required this.onDelete,
+    required this.onViewRecipients,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -86,17 +127,15 @@ class MessageListItem extends StatelessWidget {
               Icon(isSelected ? Icons.expand_less : Icons.expand_more, color: Colors.black54),
             ],
           ),
-          Spacer(), // 위의 Row와 버튼 사이의 공간을 최대한 확보
+          Spacer(),
           if (isSelected) ...[
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    // 수신자 명단 보기 기능 추가
-                  },
+                  onPressed: onViewRecipients, // 수신자 리스트 보기 버튼
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFE3E8FF),
+                    backgroundColor: lightBlueColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
@@ -104,14 +143,14 @@ class MessageListItem extends StatelessWidget {
                   ),
                   child: Text(
                     '수신자 명단 보기',
-                    style: TextStyle(color: Colors.blueAccent),
+                    style: TextStyle(color: deepBlueColor),
                   ),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: onDelete,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.grey,
+                    backgroundColor: normalBlueColor,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
@@ -119,7 +158,7 @@ class MessageListItem extends StatelessWidget {
                   ),
                   child: Text(
                     '삭제',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color:deepBlueColor),
                   ),
                 ),
               ],
