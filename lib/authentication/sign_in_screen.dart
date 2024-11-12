@@ -1,10 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:precapstone/authentication/sign_in_logic.dart';
 import 'package:precapstone/const/colors.dart';
 import 'package:precapstone/home/main_screen.dart';
 import 'package:precapstone/authentication/sign_up_screen.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final AuthService _authService = AuthService();
+  String _errorMessage = ' ';
+
+  void _login() async {
+    final email = _emailController.text;
+    final password = _passwordController.text;
+
+    final isLoggedIn = await _authService.login(email, password);
+
+    if (isLoggedIn) {
+      setState(() {
+        _errorMessage = ' ';
+      });
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => MainPage(),
+        ),
+      );
+    } else {
+      setState(() {
+        _errorMessage = '     이메일 또는 비밀번호가 잘못되었습니다.';
+      });
+
+      // 2초 후 에러 메시지 사라지게 하기
+      Future.delayed(const Duration(seconds: 1), () {
+        setState(() {
+          _errorMessage = '';
+        });
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +72,7 @@ class LoginPage extends StatelessWidget {
                 SizedBox(
                   width: isWeb ? 500 : double.infinity,
                   child: TextField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       hintText: '이메일',
                       filled: true,
@@ -49,6 +91,7 @@ class LoginPage extends StatelessWidget {
                   width: isWeb ? 500 : double.infinity,
                   child: TextField(
                     obscureText: true,
+                    controller: _passwordController,
                     decoration: InputDecoration(
                       hintText: '비밀번호',
                       filled: true,
@@ -61,19 +104,22 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 10),
+                // 에러 메시지 표시
+                SizedBox(
+                  width: isWeb ? 500 : double.infinity,
+                  child: Text(
+                    _errorMessage,
+                    style: const TextStyle(color: Colors.red, fontSize: 14),
+                  ),
+                ),
+
+                const SizedBox(height: 30),
                 SizedBox(
                   width: isWeb ? 500 : double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MainPage(),
-                        ),
-                      );
-                    },
+                    onPressed: _login,
                     style: ElevatedButton.styleFrom(
                       foregroundColor: deepBlueColor,
                       backgroundColor: normalBlueColor,
