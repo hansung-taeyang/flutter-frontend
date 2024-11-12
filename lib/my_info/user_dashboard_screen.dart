@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:precapstone/authentication/login_screen.dart';
-import 'package:precapstone/const/colors.dart'; // LoginPage가 정의된 파일 import
+import 'package:precapstone/authentication/sign_in_logic.dart';
+import 'package:precapstone/authentication/sign_in_screen.dart';
+import 'package:precapstone/const/colors.dart';
 
 class ThirdPage extends StatelessWidget {
   const ThirdPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AuthService authService = AuthService(); // AuthService 인스턴스 생성
+
     return Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
@@ -28,7 +31,7 @@ class ThirdPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      CircleAvatar(
+                      const CircleAvatar(
                         radius: 50,
                         backgroundColor: lightPinkColor,
                         child: Icon(
@@ -43,7 +46,7 @@ class ThirdPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Center(
+                            const Center(
                               child: Text(
                                 "user@example.com",
                                 style: TextStyle(
@@ -65,7 +68,7 @@ class ThirdPage extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                 ),
-                                child: Text("정보수정",
+                                child: const Text("정보수정",
                                     style: TextStyle(color: deepBlueColor)),
                               ),
                             ),
@@ -73,11 +76,12 @@ class ThirdPage extends StatelessWidget {
                             FractionallySizedBox(
                               widthFactor: 0.67,
                               child: ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
+                                  await authService.logout(); // 토큰 삭제
                                   Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const LoginPage(),
+                                      builder: (context) => LoginPage(),
                                     ),
                                   );
                                 },
@@ -87,7 +91,7 @@ class ThirdPage extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(15),
                                   ),
                                 ),
-                                child: Text(
+                                child: const Text(
                                   "로그아웃",
                                   style: TextStyle(color: whiteColor),
                                 ),
@@ -113,7 +117,7 @@ class ThirdPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       "공지사항",
                       style: TextStyle(
                         color: whiteColor,
@@ -137,7 +141,7 @@ class ThirdPage extends StatelessWidget {
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       "서비스 안내",
                       style: TextStyle(
                         color: whiteColor,
