@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:precapstone/const/colors.dart';
 
 class WriteMessagePage extends StatelessWidget {
-  final String? imageUrl;
+  String messageContent = '';
   final VoidCallback navigateToCheckImage;
+  final Function(String) navigateToInputPhoneNumber;
 
-  const WriteMessagePage({
+  final TextEditingController messageContentController =
+      TextEditingController();
+
+  WriteMessagePage({
     super.key,
-    this.imageUrl,
+    required this.messageContent,
     required this.navigateToCheckImage,
+    required this.navigateToInputPhoneNumber,
   });
 
   @override
@@ -20,56 +25,83 @@ class WriteMessagePage extends StatelessWidget {
 
         return Scaffold(
           backgroundColor: backgroundColor,
-          body: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
+          body: SingleChildScrollView(
+            child: Center(
               child: Column(
                 children: [
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 20),
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: whiteColor,
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    width: isWeb ? 500 : double.infinity,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        TextField(
-                          maxLines: 19,
-                          maxLength: 900,
-                          decoration: InputDecoration(
-                            hintText: '문자의 내용을 입력해주세요',
-                            filled: true,
-                            fillColor: backgroundColor,
-                            hoverColor: inputHoverColor,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide.none,
-                            ),
-                          ),
+                    width: isWeb ? 500 : screenSize.width * 0.9,
+                    height: isWeb
+                        ? screenSize.height * 0.5
+                        : screenSize.height * 0.7,
+                    child: TextField(
+                      maxLines: 19,
+                      maxLength: 900,
+                      controller: messageContentController
+                        ..text =
+                            messageContent.isNotEmpty ? messageContent : '',
+                      decoration: InputDecoration(
+                        hintText:
+                            messageContent.isEmpty ? '문자의 내용을 입력해주세요' : null,
+                        filled: true,
+                        fillColor: backgroundColor,
+                        hoverColor: inputHoverColor,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                          borderSide: BorderSide.none,
                         ),
-                        const SizedBox(height: 20),
-                        ElevatedButton(
-                          onPressed: navigateToCheckImage,
-                          style: ElevatedButton.styleFrom(
-                            foregroundColor: deepBlueColor,
-                            backgroundColor: normalBlueColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50.0),
-                            ),
-                          ),
-                          child: const Text(
-                            '이전으로',
-                            style: TextStyle(
-                              fontSize: 17.0,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
+                      ),
                     ),
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ElevatedButton(
+                        onPressed: navigateToCheckImage,
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: deepBlueColor,
+                          backgroundColor: normalBlueColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                        ),
+                        child: const Text(
+                          '이전으로',
+                          style: TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      ElevatedButton(
+                        onPressed: () {
+                          navigateToInputPhoneNumber(
+                              messageContentController.text);
+                        },
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: whiteColor,
+                          backgroundColor: deepBlueColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50.0),
+                          ),
+                        ),
+                        child: const Text(
+                          '연락처 입력',
+                          style: TextStyle(
+                            fontSize: 17.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
