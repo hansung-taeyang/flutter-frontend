@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:precapstone/const/message_content.dart';
 import 'package:precapstone/send_message/check_image_screen.dart';
 import 'package:precapstone/send_message/create_image_screen.dart';
-import 'package:precapstone/send_message/write_message.dart';
-import '../message_history/second_screen.dart';
-import '../my_info/third_screen.dart';
+import 'package:precapstone/send_message/input_phone_number_screen.dart';
+import 'package:precapstone/send_message/write_message_screen.dart';
+import '../message_record/record_query_screen.dart';
+import '../my_info/user_dashboard_screen.dart';
 import '../const/colors.dart';
 
 class MainPage extends StatefulWidget {
@@ -16,7 +18,6 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
   int _subIndex = 0; // 첫 번째 탭 내에서 페이지 구분
-  String imageUrl = '';
 
   void _onItemTapped(int index) {
     setState(() {
@@ -37,7 +38,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   void _goToCheckImagePage(String imageUrl) {
-    this.imageUrl = imageUrl;
+    currentImgUrl = imageUrl;
     setState(() {
       _subIndex = 1; // 이미지 확인 페이지로 이동
     });
@@ -49,6 +50,19 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  void _goToInputPhoneNumberPage(String messageContent) {
+    currentMessageContent = messageContent;
+    setState(() {
+      _subIndex = 3; // 전화번호 입력 페이지로 이동
+    });
+  }
+
+  void _backToWriteMessagePage() {
+    setState(() {
+      _subIndex = 2; // 문자 작성 페이지로 이동
+    });
+  }
+
   Widget _getCurrentPage() {
     if (_selectedIndex == 0) {
       // 첫 번째 탭에서는 _subIndex에 따라 페이지 구분
@@ -57,22 +71,28 @@ class _MainPageState extends State<MainPage> {
           return CreateImagePage(navigateToCheckImage: _goToCheckImagePage);
         case 1:
           return CheckImagePage(
-            imageUrl: imageUrl,
+            imageUrl: currentImgUrl,
             navigateToWriteMessage: _goToWriteMessagePage,
             navigateToCrateImage: _backToCreateImagePage,
           );
         case 2:
           return WriteMessagePage(
-            imageUrl: imageUrl,
+            messageContent: currentMessageContent,
             navigateToCheckImage: _backToCheckImagePage,
+            navigateToInputPhoneNumber: (currentMessageContent) =>
+                _goToInputPhoneNumberPage(currentMessageContent), // 수정된 부분
           );
+        case 3:
+          return InputPhoneNumberPage(
+              navigateToWriteMessage: _backToWriteMessagePage);
         default:
           return CreateImagePage(navigateToCheckImage: _goToCheckImagePage);
       }
     } else if (_selectedIndex == 1) {
-      return const SecondPage();
+      // 두번째 페이지
+      return const RecordQueryPage();
     } else {
-      return const ThirdPage();
+      return const UserDashboardPage();
     }
   }
 
@@ -86,6 +106,8 @@ class _MainPageState extends State<MainPage> {
           return '이미지 확인';
         case 2:
           return '문자 작성';
+        case 3:
+          return '전화번호 입력';
         default:
           return '';
       }
