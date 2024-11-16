@@ -3,6 +3,7 @@ import 'package:precapstone/const/colors.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:precapstone/const/server_address.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateImagePage extends StatefulWidget {
   final Function(String imageUrl) navigateToCheckImage;
@@ -34,7 +35,7 @@ class _CreateImagePageState extends State<CreateImagePage> {
       TextEditingController();
 
   Future<void> sendDataAndNavigate() async {
-    final url = Uri.parse('http://$address:3000/v1/image');
+    final url = Uri.parse('http://$address:3000/v1/image/withLogin');
     final category = bookCategoryController.text;
     final intro = bookIntroductionController.text;
 
@@ -54,9 +55,21 @@ class _CreateImagePageState extends State<CreateImagePage> {
     );
 
     try {
+      // SharedPreferences에서 토큰 가져오기
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('token');
+
+      if (token == null) {
+        print('Token is missing!');
+        return;
+      }
+
       final response = await http.post(
         url,
-        headers: {'Content-Type': 'application/json'},
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
         body: json.encode({
           'prompt': intro + " " + category,
           'style': imgStyle,
@@ -93,21 +106,24 @@ class _CreateImagePageState extends State<CreateImagePage> {
         var isWeb = screenSize.width > 600;
 
         return Scaffold(
-          resizeToAvoidBottomInset: true,
           backgroundColor: backgroundColor,
-          body: Center(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-              child: Column(
-                children: [
-                  const SizedBox(height: 10),
-                  Container(
+          body: SafeArea(
+            child: ListView(
+              padding: const EdgeInsets.all(20),
+              children: [
+                Center(
+                  child: Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: whiteColor,
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    width: isWeb ? 500 : double.infinity,
+                    constraints: BoxConstraints(
+                      minHeight: isWeb
+                          ? screenSize.height * 0.5
+                          : screenSize.height * 0.7,
+                    ),
+                    width: isWeb ? 500 : screenSize.width * 0.9,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -123,35 +139,35 @@ class _CreateImagePageState extends State<CreateImagePage> {
                           hintText: '책 소개를 입력해주세요 (최대 3900자)',
                           controller: bookIntroductionController,
                           maxLength: 3900,
-                          maxLines: 13,
+                          maxLines: 10,
                         ),
                         const SizedBox(height: 10),
                         _buildDropdownSection(),
-                        const SizedBox(height: 20),
-                        Center(
-                          child: ElevatedButton(
-                            onPressed: sendDataAndNavigate,
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: whiteColor,
-                              backgroundColor: deepBlueColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50.0),
-                              ),
-                            ),
-                            child: const Text(
-                              '이미지 생성하기',
-                              style: TextStyle(
-                                fontSize: 17.0,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
                       ],
                     ),
                   ),
-                ],
-              ),
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: sendDataAndNavigate,
+                    style: ElevatedButton.styleFrom(
+                      foregroundColor: whiteColor,
+                      backgroundColor: deepBlueColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50.0),
+                      ),
+                    ),
+                    child: const Text(
+                      '이미지 생성하기',
+                      style: TextStyle(
+                        fontSize: 17.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         );
@@ -186,7 +202,7 @@ class _CreateImagePageState extends State<CreateImagePage> {
             filled: true,
             fillColor: backgroundColor,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
+              borderRadius: BorderRadius.circular(15.0),
               borderSide: BorderSide.none,
             ),
           ),
