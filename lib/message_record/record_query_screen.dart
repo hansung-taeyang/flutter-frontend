@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:precapstone/const/colors.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +16,7 @@ class RecordQueryPage extends StatefulWidget {
 
 class _RecordQueryPageState extends State<RecordQueryPage> {
   int? selectedIndex;
+  List<int> messageIds = [];
   List<String> imageUrls = []; // 이미지 URL 리스트
   List<String> messageContents = [];
   List<String> createDates = [];
@@ -64,6 +67,8 @@ class _RecordQueryPageState extends State<RecordQueryPage> {
               .map((item) => item["messageJson"]["targetCount"].toString())
               .toList();
 
+          messageIds = messages.map((item) => item["id"] as int).toList();
+
           print(createDates[0]);
         });
       } else {
@@ -94,7 +99,7 @@ class _RecordQueryPageState extends State<RecordQueryPage> {
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 204) {
         print('Message deleted successfully');
       } else {
         print('Failed to delete message. Status code: ${response.statusCode}');
@@ -143,9 +148,10 @@ class _RecordQueryPageState extends State<RecordQueryPage> {
                             messageContent: messageContents[index],
                             createDate: createDates[index],
                             targetCount: targetCounts[index],
+                            messageId: messageIds[index],
                             isSelected: selectedIndex == index,
                             onDelete: () {
-                              deleteQuery(index);
+                              deleteQuery(messageIds[index]);
                               setState(() {
                                 imageUrls.removeAt(index);
                                 messageContents.removeAt(index);
@@ -174,6 +180,7 @@ class MessageListItem extends StatelessWidget {
   final String messageContent;
   final String createDate;
   final String targetCount;
+  final int messageId;
   final bool isSelected;
   final VoidCallback onDelete;
 
@@ -182,6 +189,7 @@ class MessageListItem extends StatelessWidget {
     required this.messageContent,
     required this.createDate,
     required this.targetCount,
+    required this.messageId,
     required this.isSelected,
     required this.onDelete,
   });
