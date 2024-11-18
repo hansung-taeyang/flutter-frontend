@@ -11,3 +11,4 @@ const greyColor = Color(0xFFBDBDBD);
 const lightPinkColor = Color(0xFFFFE5EF);
 const normalPinkColor = Color(0xFFF3B1C9);
 const deepPinkColor = Color(0xFFD06D91);
+const normalRedColor = Color(0xFFE57373);
