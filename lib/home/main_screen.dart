@@ -5,7 +5,7 @@ import 'package:precapstone/send_message/create_image_screen.dart';
 import 'package:precapstone/send_message/input_phone_number_screen.dart';
 import 'package:precapstone/send_message/write_message_screen.dart';
 import '../message_record/record_query_screen.dart';
-import '../my_info/user_dashboard_screen.dart';
+import '../user_info/user_dashboard_screen.dart';
 import '../const/colors.dart';
 
 class MainPage extends StatefulWidget {
@@ -37,8 +37,7 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  void _goToCheckImagePage(String imageUrl) {
-    currentImgUrl = imageUrl;
+  void _goToCheckImagePage() {
     setState(() {
       _subIndex = 1; // 이미지 확인 페이지로 이동
     });
@@ -50,8 +49,7 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  void _goToInputPhoneNumberPage(String messageContent) {
-    currentMessageContent = messageContent;
+  void _goToInputPhoneNumberPage() {
     setState(() {
       _subIndex = 3; // 전화번호 입력 페이지로 이동
     });
@@ -71,7 +69,6 @@ class _MainPageState extends State<MainPage> {
           return CreateImagePage(navigateToCheckImage: _goToCheckImagePage);
         case 1:
           return CheckImagePage(
-            imageUrl: currentImgUrl,
             navigateToWriteMessage: _goToWriteMessagePage,
             navigateToCrateImage: _backToCreateImagePage,
           );
@@ -79,12 +76,13 @@ class _MainPageState extends State<MainPage> {
           return WriteMessagePage(
             messageContent: currentMessageContent,
             navigateToCheckImage: _backToCheckImagePage,
-            navigateToInputPhoneNumber: (currentMessageContent) =>
-                _goToInputPhoneNumberPage(currentMessageContent), // 수정된 부분
+            navigateToInputPhoneNumber: _goToInputPhoneNumberPage,
           );
         case 3:
           return InputPhoneNumberPage(
-              navigateToWriteMessage: _backToWriteMessagePage);
+            navigateToWriteMessage: _backToWriteMessagePage,
+            navigateToCrateImage: _backToCreateImagePage,
+          );
         default:
           return CreateImagePage(navigateToCheckImage: _goToCheckImagePage);
       }
