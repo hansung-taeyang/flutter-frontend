@@ -65,7 +65,7 @@ class _CheckImagePageState extends State<CheckImagePage> {
                           errorBuilder: (context, error, stackTrace) =>
                               const Text(
                             '이미지를 불러올 수 없습니다.',
-                            style: TextStyle(color: Colors.red),
+                            style: TextStyle(color: normalRedColor),
                           ),
                         ),
                       )),
