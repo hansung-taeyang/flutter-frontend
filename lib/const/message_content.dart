@@ -1,4 +1,4 @@
 var currentImgUrl = '';
 var currentMessageContent = '';
-var currentHowManyPeople = '';
-var currentPhoneNumberArray = [];
+var currentSender = '';
+var currentReceiverArray = [];
