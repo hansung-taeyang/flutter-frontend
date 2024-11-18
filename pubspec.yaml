@@ -28,6 +28,8 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  file_picker: ^5.2.2             # 파일 선택기
+  excel: ^2.0.4                   # 엑셀 파일 읽기
   http: ^0.13.4
   shared_preferences: ^2.0.9
   flutter:
