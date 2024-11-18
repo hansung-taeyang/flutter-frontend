@@ -14,6 +14,8 @@ class RecordQueryPage extends StatefulWidget {
 
 class _RecordQueryPageState extends State<RecordQueryPage> {
   int? selectedIndex;
+  List messages = [];
+  List<int> messageIds = [];
   List<String> imageUrls = []; // 이미지 URL 리스트
   List<String> messageContents = [];
   List<String> createDates = [];
@@ -47,7 +49,7 @@ class _RecordQueryPageState extends State<RecordQueryPage> {
         final data = json.decode(response.body);
 
         setState(() {
-          final messages = data['messages'] as List;
+          messages = data['messages'] as List;
 
           imageUrls = messages
               .map((item) => 'http://$address:3000${item["image"]}')
@@ -63,6 +65,8 @@ class _RecordQueryPageState extends State<RecordQueryPage> {
           targetCounts = messages
               .map((item) => item["messageJson"]["targetCount"].toString())
               .toList();
+
+          messageIds = messages.map((item) => item["id"] as int).toList();
 
           print(createDates[0]);
         });
@@ -94,7 +98,7 @@ class _RecordQueryPageState extends State<RecordQueryPage> {
         },
       );
 
-      if (response.statusCode == 200) {
+      if (response.statusCode == 204) {
         print('Message deleted successfully');
       } else {
         print('Failed to delete message. Status code: ${response.statusCode}');
@@ -126,38 +130,69 @@ class _RecordQueryPageState extends State<RecordQueryPage> {
                     width: isWeb ? 500 : screenSize.width * 0.9,
                     height: isWeb
                         ? screenSize.height * 0.7
-                        : screenSize.height * 0.8,
+                        : screenSize.height * 0.75,
                     padding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 20.0),
-                    child: ListView.builder(
-                      itemCount: imageUrls.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              selectedIndex =
-                                  selectedIndex == index ? null : index;
-                            });
-                          },
-                          child: MessageListItem(
-                            imageUrl: imageUrls[index], // 각 항목에 이미지 URL 전달
-                            messageContent: messageContents[index],
-                            createDate: createDates[index],
-                            targetCount: targetCounts[index],
-                            isSelected: selectedIndex == index,
-                            onDelete: () {
-                              deleteQuery(index);
-                              setState(() {
-                                imageUrls.removeAt(index);
-                                messageContents.removeAt(index);
-                                createDates.removeAt(index);
-                                targetCounts.removeAt(index);
-                                selectedIndex = null;
-                              });
+                    child: messages.isEmpty
+                        ? const Center(
+                            child: Text(
+                              '메시지가 없습니다.',
+                              style: TextStyle(fontSize: 16, color: greyColor),
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: messages.length,
+                            itemBuilder: (context, index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedIndex =
+                                        selectedIndex == index ? null : index;
+                                  });
+                                },
+                                child: MessageListItem(
+                                  imageUrl:
+                                      imageUrls[index], // 각 항목에 이미지 URL 전달
+                                  messageContent: messageContents[index],
+                                  createDate: createDates[index],
+                                  targetCount: targetCounts[index],
+                                  messageId: messageIds[index],
+                                  isSelected: selectedIndex == index,
+                                  onDelete: () async {
+                                    await deleteQuery(
+                                        messageIds[index]); // 서버에서 삭제
+                                    setState(() {
+                                      messages
+                                          .removeAt(index); // messages에서 직접 삭제
+
+                                      // 동기화된 리스트도 업데이트
+                                      imageUrls = messages
+                                          .map((item) =>
+                                              'http://$address:3000${item["image"]}')
+                                          .toList();
+                                      messageContents = messages
+                                          .map((item) => item["messageJson"]
+                                              ["content"] as String)
+                                          .toList();
+                                      createDates = messages
+                                          .map((item) =>
+                                              item["sentAt"] as String)
+                                          .toList();
+                                      targetCounts = messages
+                                          .map((item) => item["messageJson"]
+                                                  ["targetCount"]
+                                              .toString())
+                                          .toList();
+                                      messageIds = messages
+                                          .map((item) => item["id"] as int)
+                                          .toList();
+
+                                      selectedIndex = null;
+                                    });
+                                  },
+                                ),
+                              );
                             },
                           ),
-                        );
-                      },
-                    ),
                   ),
                 ],
               ),
@@ -174,6 +209,7 @@ class MessageListItem extends StatelessWidget {
   final String messageContent;
   final String createDate;
   final String targetCount;
+  final int messageId;
   final bool isSelected;
   final VoidCallback onDelete;
 
@@ -182,6 +218,7 @@ class MessageListItem extends StatelessWidget {
     required this.messageContent,
     required this.createDate,
     required this.targetCount,
+    required this.messageId,
     required this.isSelected,
     required this.onDelete,
   });
@@ -202,12 +239,14 @@ class MessageListItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                messageContent.substring(0, 20),
+                messageContent.length >= 15
+                    ? messageContent.substring(0, 15) // 길이가 15자 이상일 때
+                    : messageContent, // 15자 미만일 경우 전체 출력
                 style: const TextStyle(fontSize: 16, color: blackColor),
               ),
               Icon(
                 isSelected ? Icons.expand_less : Icons.expand_more,
-                color: Colors.black54,
+                color: greyColor,
               ),
             ],
           ),
@@ -216,7 +255,9 @@ class MessageListItem extends StatelessWidget {
           ),
           if (isSelected)
             Text(
-              messageContent.substring(20),
+              messageContent.length > 15
+                  ? messageContent.substring(15) // 15자 초과 부분 출력
+                  : '',
               style: const TextStyle(fontSize: 16, color: blackColor),
             ),
           const SizedBox(
@@ -238,7 +279,7 @@ class MessageListItem extends StatelessWidget {
                           errorBuilder: (context, error, stackTrace) =>
                               const Text(
                             '이미지를 불러올 수 없습니다.',
-                            style: TextStyle(color: Colors.red),
+                            style: TextStyle(color: normalRedColor),
                           ),
                         ),
                       ),
@@ -254,7 +295,7 @@ class MessageListItem extends StatelessWidget {
                   fit: BoxFit.contain,
                   errorBuilder: (context, error, stackTrace) => const Text(
                     '이미지를 불러올 수 없습니다.',
-                    style: TextStyle(color: Colors.red),
+                    style: TextStyle(color: normalRedColor),
                   ),
                 ),
               ),
@@ -264,11 +305,11 @@ class MessageListItem extends StatelessWidget {
           ),
           if (isSelected)
             Row(
-              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   '수신 인원 : $targetCount\n문자 전송 날짜 : ${createDate.substring(0, 10)} \n문자 전송 시간 : ${createDate.substring(11, 19)}',
-                  style: const TextStyle(fontSize: 16, color: blackColor),
+                  style: const TextStyle(fontSize: 13, color: blackColor),
                 ),
                 const SizedBox(width: 20),
                 ElevatedButton(

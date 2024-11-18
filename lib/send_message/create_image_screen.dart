@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:precapstone/const/colors.dart';
 import 'package:http/http.dart' as http;
+import 'package:precapstone/const/message_content.dart';
 import 'dart:convert';
 import 'package:precapstone/const/server_address.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class CreateImagePage extends StatefulWidget {
-  final Function(String imageUrl) navigateToCheckImage;
+  final VoidCallback navigateToCheckImage;
 
   const CreateImagePage({
     super.key,
@@ -39,9 +40,21 @@ class _CreateImagePageState extends State<CreateImagePage> {
     final category = bookCategoryController.text;
     final intro = bookIntroductionController.text;
 
+    if (bookCategoryController.text == '') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('책 카테고리를 입력하세요')),
+      );
+      return;
+    }
+    if (bookIntroductionController.text == '') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('책 소개를 입력하세요')),
+      );
+      return;
+    }
     if (selectStyle == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('이미지 스타일을 선택하세요')),
+        const SnackBar(content: Text('이미지 스타일을 선택하세요')),
       );
       return;
     }
@@ -50,7 +63,7 @@ class _CreateImagePageState extends State<CreateImagePage> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return Center(child: CircularProgressIndicator());
+        return const Center(child: CircularProgressIndicator());
       },
     );
 
@@ -81,13 +94,14 @@ class _CreateImagePageState extends State<CreateImagePage> {
       if (response.statusCode == 200) {
         final imageUrl = responseData['url'];
         if (imageUrl != null) {
-          widget.navigateToCheckImage(imageUrl);
+          currentImgUrl = imageUrl;
+          widget.navigateToCheckImage();
         } else {
           throw Exception("잘못된 응답: 이미지 URL을 찾을 수 없음");
         }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('서버 전송 실패')),
+          const SnackBar(content: Text('서버 전송 실패')),
         );
       }
     } catch (e) {

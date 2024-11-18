@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:precapstone/authentication/sign_in_logic.dart';
 import 'package:precapstone/authentication/sign_in_screen.dart';
 import 'package:precapstone/const/colors.dart';
+import '../const/user_account.dart';
 
 class UserDashboardPage extends StatelessWidget {
   const UserDashboardPage({super.key});
@@ -51,15 +52,15 @@ class UserDashboardPage extends StatelessWidget {
                         const SizedBox(width: 20),
                         Column(
                           children: [
-                            const Expanded(
+                            Expanded(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Center(
                                     child: Text(
-                                      "user@example.com",
-                                      style: TextStyle(
+                                      userEmail,
+                                      style: const TextStyle(
                                         fontSize: 17,
                                         color: blackColor,
                                       ),
@@ -109,7 +110,7 @@ class UserDashboardPage extends StatelessWidget {
                       ],
                     ),
                   ),
-                  const SizedBox(height: 20), // 박스 아래 여백
+                  const SizedBox(height: 20),
                   Container(
                     child: Column(
                       children: [

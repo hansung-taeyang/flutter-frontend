@@ -4,6 +4,8 @@ import 'package:precapstone/const/colors.dart';
 import 'package:precapstone/home/main_screen.dart';
 import 'package:precapstone/authentication/sign_up_screen.dart';
 
+import '../const/user_account.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -27,6 +29,8 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         _errorMessage = ' ';
       });
+      userEmail = email;
+      userPassword = password;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -38,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
         _errorMessage = '     이메일 또는 비밀번호가 잘못되었습니다.';
       });
 
-      // 2초 후 에러 메시지 사라지게 하기
+      // 에러 메시지 사라지게 하기
       Future.delayed(const Duration(seconds: 1), () {
         setState(() {
           _errorMessage = '';
@@ -110,7 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                   width: isWeb ? 500 : double.infinity,
                   child: Text(
                     _errorMessage,
-                    style: const TextStyle(color: Colors.red, fontSize: 14),
+                    style: const TextStyle(color: normalRedColor, fontSize: 14),
                   ),
                 ),
 

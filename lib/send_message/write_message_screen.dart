@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:precapstone/const/colors.dart';
+import 'package:precapstone/const/message_content.dart';
 
 class WriteMessagePage extends StatelessWidget {
   String messageContent = '';
   final VoidCallback navigateToCheckImage;
-  final Function(String) navigateToInputPhoneNumber;
+
+  final VoidCallback navigateToInputPhoneNumber;
 
   final TextEditingController messageContentController =
       TextEditingController();
@@ -41,14 +43,20 @@ class WriteMessagePage extends StatelessWidget {
                         ? screenSize.height * 0.5
                         : screenSize.height * 0.7,
                     child: TextField(
+                      controller: messageContentController
+                        ..text = currentMessageContent.isNotEmpty
+                            ? currentMessageContent
+                            : '', // 초기 값 설정
                       maxLines: 19,
                       maxLength: 900,
-                      controller: messageContentController
-                        ..text =
-                            messageContent.isNotEmpty ? messageContent : '',
+                      onChanged: (value) {
+                        currentMessageContent =
+                            value; // 입력값을 currentMessageContent에 저장
+                      },
                       decoration: InputDecoration(
-                        hintText:
-                            messageContent.isEmpty ? '문자의 내용을 입력해주세요' : null,
+                        hintText: currentMessageContent.isEmpty
+                            ? '문자의 내용을 입력해주세요'
+                            : null,
                         filled: true,
                         fillColor: backgroundColor,
                         hoverColor: inputHoverColor,
@@ -83,8 +91,14 @@ class WriteMessagePage extends StatelessWidget {
                       const SizedBox(width: 12),
                       ElevatedButton(
                         onPressed: () {
-                          navigateToInputPhoneNumber(
-                              messageContentController.text);
+                          if ((messageContentController.text) == '') {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('메시지를 입력하세요')),
+                            );
+                          } else {
+                            // 메시지 내용이 비어있지 않다면
+                            navigateToInputPhoneNumber();
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: whiteColor,
@@ -103,6 +117,7 @@ class WriteMessagePage extends StatelessWidget {
                       ),
                     ],
                   ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
