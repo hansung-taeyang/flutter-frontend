@@ -255,9 +255,7 @@ class MessageListItem extends StatelessWidget {
           ),
           if (isSelected)
             Text(
-              messageContent.length > 15
-                  ? messageContent.substring(15) // 15자 초과 부분 출력
-                  : '',
+              messageContent,
               style: const TextStyle(fontSize: 16, color: blackColor),
             ),
           const SizedBox(
