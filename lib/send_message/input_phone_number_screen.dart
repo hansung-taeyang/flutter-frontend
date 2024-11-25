@@ -298,7 +298,7 @@ class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: whiteColor,
-                                backgroundColor: greyColor,
+                                backgroundColor: normalGreyColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50.0),
                                 ),
@@ -321,7 +321,7 @@ class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: whiteColor,
-                                backgroundColor: greyColor,
+                                backgroundColor: normalGreyColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50.0),
                                 ),
@@ -360,7 +360,7 @@ class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: whiteColor,
-                                backgroundColor: greyColor,
+                                backgroundColor: normalGreyColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50.0),
                                 ),
@@ -385,7 +385,7 @@ class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
                               ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                   foregroundColor: whiteColor,
-                                  backgroundColor: greyColor,
+                                  backgroundColor: normalGreyColor,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(50.0),
                                   ),
@@ -397,7 +397,7 @@ class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 foregroundColor: whiteColor,
-                                backgroundColor: greyColor,
+                                backgroundColor: normalGreyColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(50.0),
                                 ),

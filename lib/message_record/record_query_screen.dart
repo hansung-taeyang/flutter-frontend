@@ -39,7 +39,7 @@ class _RecordQueryPageState extends State<RecordQueryPage> {
       }
 
       final response = await http.get(
-        Uri.parse('http://$address:3000/v1/message/withLogin'),
+        Uri.parse('http://$address:3000/v1/message'),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -136,7 +136,8 @@ class _RecordQueryPageState extends State<RecordQueryPage> {
                         ? const Center(
                             child: Text(
                               '메시지가 없습니다.',
-                              style: TextStyle(fontSize: 16, color: greyColor),
+                              style: TextStyle(
+                                  fontSize: 16, color: normalGreyColor),
                             ),
                           )
                         : ListView.builder(
@@ -246,7 +247,7 @@ class MessageListItem extends StatelessWidget {
               ),
               Icon(
                 isSelected ? Icons.expand_less : Icons.expand_more,
-                color: greyColor,
+                color: normalGreyColor,
               ),
             ],
           ),
