@@ -41,12 +41,12 @@ class UserDashboardPage extends StatelessWidget {
                           height: 100,
                           decoration: const BoxDecoration(
                             shape: BoxShape.circle,
-                            color: lightPinkColor,
+                            color: lightGreyColor,
                           ),
                           child: const Icon(
                             Icons.person,
                             size: 50,
-                            color: normalPinkColor,
+                            color: normalGreyColor,
                           ),
                         ),
                         const SizedBox(width: 20),
@@ -59,7 +59,9 @@ class UserDashboardPage extends StatelessWidget {
                                 children: [
                                   Center(
                                     child: Text(
-                                      userEmail,
+                                      userEmail.length > 11
+                                          ? '${userEmail.substring(0, 8)}...${userEmail.substring(userEmail.length - 3)}'
+                                          : userEmail,
                                       style: const TextStyle(
                                         fontSize: 17,
                                         color: blackColor,
@@ -95,7 +97,7 @@ class UserDashboardPage extends StatelessWidget {
                                 );
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: greyColor,
+                                backgroundColor: normalGreyColor,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(15),
                                 ),
@@ -121,7 +123,7 @@ class UserDashboardPage extends StatelessWidget {
                               // 공지사항 버튼 기능 추가 예정
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: normalPinkColor,
+                              backgroundColor: normalBlueColor,
                               padding: const EdgeInsets.symmetric(vertical: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
@@ -145,7 +147,7 @@ class UserDashboardPage extends StatelessWidget {
                               // 서비스 안내 버튼 기능 추가 예정
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: deepPinkColor,
+                              backgroundColor: lightBlueColor,
                               padding: const EdgeInsets.symmetric(vertical: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15),
