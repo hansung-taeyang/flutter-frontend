@@ -264,7 +264,7 @@ class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
                     ),
                     width: isWeb ? 500 : screenSize.width * 0.9,
                     height: isWeb
-                        ? screenSize.height * 0.5
+                        ? screenSize.height * 0.64
                         : screenSize.height * 0.7,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -406,6 +406,14 @@ class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
                               child: const Text("수신자 확인"),
                             ),
                           ],
+                        ),
+                        if (isWeb) SizedBox(height: 10),
+                        if (isWeb) SizedBox(
+                          width: isWeb ? 500 : double.infinity,
+                          child: Text(
+                            "✔ 업로드 가능한 엑셀 파일 형식: .xlsx, .xls\n✔ 첫 번째 열에 휴대폰 번호를 숫자 형식으로 입력해야 합니다\n✔ 번호 맨 앞의 0은 제외해 주세요 (예시 입력: 1012345678)\n✔ 파일에 빈 셀 또는 잘못된 데이터가 포함된 경우 오류가 발생할 수 있습니다",
+                            style: const TextStyle(color: normalRedColor, fontSize: 14),
+                          ),
                         ),
                       ],
                     ),

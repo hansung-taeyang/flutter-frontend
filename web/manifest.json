@@ -1,11 +1,11 @@
 {
-    "name": "precapstone",
-    "short_name": "precapstone",
+    "name": "READ:ME",
+    "short_name": "READ:ME",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "READ:ME",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
