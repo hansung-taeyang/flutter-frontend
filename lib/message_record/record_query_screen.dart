@@ -39,7 +39,7 @@ class _RecordQueryPageState extends State<RecordQueryPage> {
       }
 
       final response = await http.get(
-        Uri.parse('http://$address:3000/v1/message'),
+        Uri.parse('http://$address/v1/message'),
         headers: {
           'Authorization': 'Bearer $token',
         },
@@ -52,7 +52,7 @@ class _RecordQueryPageState extends State<RecordQueryPage> {
           messages = data['messages'] as List;
 
           imageUrls = messages
-              .map((item) => 'http://$address:3000${item["image"]}')
+              .map((item) => 'http://$address${item["image"]}')
               .toList();
 
           messageContents = messages
@@ -79,7 +79,7 @@ class _RecordQueryPageState extends State<RecordQueryPage> {
   }
 
   Future<void> deleteQuery(int index) async {
-    final url = Uri.parse('http://$address:3000/v1/message/$index');
+    final url = Uri.parse('http://$address/v1/message/$index');
 
     try {
       // SharedPreferences에서 토큰 가져오기
@@ -168,7 +168,7 @@ class _RecordQueryPageState extends State<RecordQueryPage> {
                                       // 동기화된 리스트도 업데이트
                                       imageUrls = messages
                                           .map((item) =>
-                                              'http://$address:3000${item["image"]}')
+                                              'http://$address${item["image"]}')
                                           .toList();
                                       messageContents = messages
                                           .map((item) => item["messageJson"]
