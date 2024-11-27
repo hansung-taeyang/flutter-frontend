@@ -46,7 +46,7 @@ class _CheckImagePageState extends State<CheckImagePage> {
                       ),
                       child: Center(
                         child: Image.network(
-                          'http://$address:3000$currentImgUrl',
+                          'http://$address$currentImgUrl',
                           fit: BoxFit.cover,
                           loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent? loadingProgress) {

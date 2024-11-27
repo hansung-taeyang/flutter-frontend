@@ -36,7 +36,7 @@ class _CreateImagePageState extends State<CreateImagePage> {
       TextEditingController();
 
   Future<void> sendDataAndNavigate() async {
-    final url = Uri.parse('http://$address:3000/v1/image');
+    final url = Uri.parse('http://$address/v1/image');
     final category = bookCategoryController.text;
     final intro = bookIntroductionController.text;
 
