@@ -29,7 +29,7 @@ class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
   final TextEditingController receiverController = TextEditingController();
 
   Future<void> sendMessage() async {
-    final url = Uri.parse('http://$address:3000/v1/message');
+    final url = Uri.parse('http://$address/v1/message');
 
     if (currentSender == '') {
       ScaffoldMessenger.of(context).showSnackBar(

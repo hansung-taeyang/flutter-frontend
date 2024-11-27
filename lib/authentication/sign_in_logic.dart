@@ -6,7 +6,7 @@ import 'package:precapstone/const/server_address.dart';
 class AuthService {
   // 로그인 함수
   Future<bool> login(String email, String password) async {
-    final url = Uri.parse('http://$address:3000/v1/signIn');
+    final url = Uri.parse('http://$address/v1/signIn');
 
     try {
       final response = await http.post(
