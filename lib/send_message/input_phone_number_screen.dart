@@ -1,46 +1,81 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:precapstone/const/colors.dart';
-import 'package:precapstone/const/message_content.dart';
 import 'package:excel/excel.dart';
 import 'package:http/http.dart' as http;
 import 'package:file_picker/file_picker.dart';
 import 'package:precapstone/const/server_address.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class InputPhoneNumberPage extends StatefulWidget {
+class InputPhoneNumberScreen extends StatefulWidget {
   final VoidCallback navigateToWriteMessage;
   final VoidCallback navigateToCrateImage;
 
-  const InputPhoneNumberPage({
+  const InputPhoneNumberScreen({
     super.key,
     required this.navigateToWriteMessage,
     required this.navigateToCrateImage,
   });
 
   @override
-  _InputPhoneNumberPageState createState() => _InputPhoneNumberPageState();
+  _InputPhoneNumberScreenState createState() => _InputPhoneNumberScreenState();
 }
 
-class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
+class _InputPhoneNumberScreenState extends State<InputPhoneNumberScreen> {
   final TextEditingController senderController = TextEditingController();
   final TextEditingController receiverController = TextEditingController();
+  String currentSender = '';
+  List<String> currentReceiverArray = [];
+  String? currentImgUrl; // SharedPreferences에서 로드
+  String? currentMessageContent; // SharedPreferences에서 로드
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  //// SharedPreferences에서 데이터를 불러오는 함수
+  Future<void> _loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      currentImgUrl = prefs.getString('currentImgUrl');
+      currentMessageContent = prefs.getString('currentMessageContent');
+      currentSender = prefs.getString('currentSender') ?? '';
+      currentReceiverArray =
+          prefs.getStringList('currentReceiverArray') ?? <String>[];
+    });
+  }
+
+  /// SharedPreferences에 데이터를 저장하는 함수
+  Future<void> _saveSender() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('currentSender', currentSender);
+  }
+
+  Future<void> _saveReceiverArray() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setStringList('currentReceiverArray', currentReceiverArray);
+  }
 
   Future<void> sendMessage() async {
     final url = Uri.parse('http://$address/v1/message');
 
-    if (currentSender == '') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('발신자를 입력하세요')),
-      );
+    if (currentSender.isEmpty) {
+      _showSnackBar('발신자를 입력하세요');
       return;
     }
     if (currentReceiverArray.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('수신자를 입력하세요')),
-      );
+      _showSnackBar('수신자를 입력하세요');
+      return;
+    }
+    if (currentImgUrl == null || currentImgUrl!.isEmpty) {
+      _showSnackBar('이미지 URL을 찾을 수 없습니다.');
+      return;
+    }
+    if (currentMessageContent == null || currentMessageContent!.isEmpty) {
+      _showSnackBar('메시지 내용을 찾을 수 없습니다.');
       return;
     }
 
@@ -53,12 +88,10 @@ class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
     );
 
     try {
-      // SharedPreferences에서 토큰 가져오기
       final prefs = await SharedPreferences.getInstance();
       final token = prefs.getString('token');
 
       if (token == null) {
-        print('Token is missing!');
         return;
       }
 
@@ -83,12 +116,6 @@ class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
       Navigator.of(context).pop();
 
       if (response.statusCode == 200) {
-        // 성공 시
-        currentImgUrl = '';
-        currentMessageContent = '';
-        currentSender = '';
-        currentReceiverArray = [];
-
         showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -137,7 +164,6 @@ class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
           _showSnackBar('엑셀 파일에 유효한 데이터가 없습니다.');
           return;
         }
-        print(sheet.rows); // 모든 행의 데이터를 출력
 
         final phoneNumbers = sheet.rows
             .map((row) {
@@ -303,13 +329,14 @@ class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
                                   borderRadius: BorderRadius.circular(50.0),
                                 ),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_isValidPhoneNumber(
                                     senderController.text)) {
                                   setState(() {
                                     currentSender = senderController.text;
                                     senderController.clear();
                                   });
+                                  await _saveSender();
                                   _showSnackBar('발신자가 저장되었습니다.');
                                 } else {
                                   _showSnackBar('유효하지 않은 전화번호입니다.');
@@ -365,7 +392,7 @@ class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
                                   borderRadius: BorderRadius.circular(50.0),
                                 ),
                               ),
-                              onPressed: () {
+                              onPressed: () async {
                                 if (_isValidPhoneNumber(
                                     receiverController.text)) {
                                   setState(() {
@@ -373,6 +400,7 @@ class _InputPhoneNumberPageState extends State<InputPhoneNumberPage> {
                                         .add(receiverController.text);
                                     receiverController.clear();
                                   });
+                                  await _saveReceiverArray();
                                   _showSnackBar('수신자가 추가되었습니다.');
                                 } else {
                                   _showSnackBar('유효하지 않은 전화번호입니다.');

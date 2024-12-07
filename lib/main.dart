@@ -35,7 +35,9 @@ class MyApp extends StatelessWidget {
           FlutterNativeSplash.remove(); // 스플래시 화면 제거
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            home: snapshot.data == true ? const MainPage() : LoginPage(),
+            home: snapshot.data == true
+                ? const MainScreen()
+                : const SignInScreen(),
           );
         }
       },

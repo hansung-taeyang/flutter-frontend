@@ -1,23 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:precapstone/const/colors.dart';
-import 'package:precapstone/const/message_content.dart';
 import 'package:precapstone/const/server_address.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class CheckImagePage extends StatefulWidget {
+class CheckImageScreen extends StatefulWidget {
   final VoidCallback navigateToWriteMessage;
   final VoidCallback navigateToCrateImage;
 
-  const CheckImagePage({
+  const CheckImageScreen({
     super.key,
     required this.navigateToCrateImage,
     required this.navigateToWriteMessage,
   });
 
   @override
-  State<CheckImagePage> createState() => _CheckImagePageState();
+  State<CheckImageScreen> createState() => _CheckImageScreenState();
 }
 
-class _CheckImagePageState extends State<CheckImagePage> {
+class _CheckImageScreenState extends State<CheckImageScreen> {
+  String currentImgUrl = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCurrentImgUrl(); // SharedPreferences에서 URL 로드
+  }
+
+  Future<void> _loadCurrentImgUrl() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      currentImgUrl = prefs.getString('currentImgUrl')!;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
@@ -46,7 +61,7 @@ class _CheckImagePageState extends State<CheckImagePage> {
                       ),
                       child: Center(
                         child: Image.network(
-                          'http://$address$currentImgUrl',
+                          'http://${address}/${currentImgUrl}',
                           fit: BoxFit.cover,
                           loadingBuilder: (BuildContext context, Widget child,
                               ImageChunkEvent? loadingProgress) {

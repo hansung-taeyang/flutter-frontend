@@ -5,14 +5,14 @@ import 'dart:convert';
 import 'package:precapstone/const/server_address.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class RecordQueryPage extends StatefulWidget {
-  const RecordQueryPage({super.key});
+class RecordQueryScreen extends StatefulWidget {
+  const RecordQueryScreen({super.key});
 
   @override
-  _RecordQueryPageState createState() => _RecordQueryPageState();
+  _RecordQueryScreenState createState() => _RecordQueryScreenState();
 }
 
-class _RecordQueryPageState extends State<RecordQueryPage> {
+class _RecordQueryScreenState extends State<RecordQueryScreen> {
   int? selectedIndex;
   List messages = [];
   List<int> messageIds = [];
@@ -67,8 +67,6 @@ class _RecordQueryPageState extends State<RecordQueryPage> {
               .toList();
 
           messageIds = messages.map((item) => item["id"] as int).toList();
-
-          print(createDates[0]);
         });
       } else {
         print('Failed to load images. Status code: ${response.statusCode}');
@@ -214,7 +212,8 @@ class MessageListItem extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onDelete;
 
-  MessageListItem({
+  const MessageListItem({
+    super.key,
     required this.imageUrl,
     required this.messageContent,
     required this.createDate,

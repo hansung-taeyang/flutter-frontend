@@ -1,40 +1,38 @@
 import 'package:flutter/material.dart';
-import 'package:precapstone/authentication/sign_in_logic.dart';
+import 'package:precapstone/authentication/authentication_logic.dart';
 import 'package:precapstone/const/colors.dart';
 import 'package:precapstone/home/main_screen.dart';
 import 'package:precapstone/authentication/sign_up_screen.dart';
 
-import '../const/user_account.dart';
-
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignInScreenState createState() => _SignInScreenState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final AuthService _authService = AuthService();
   String _errorMessage = ' ';
 
-  void _login() async {
+  void _signin() async {
     final email = _emailController.text;
     final password = _passwordController.text;
 
-    final isLoggedIn = await _authService.login(email, password);
+    final isSignedIn = await signIn(email, password);
 
-    if (isLoggedIn) {
+    if (isSignedIn) {
       setState(() {
         _errorMessage = ' ';
       });
-      userEmail = email;
-      userPassword = password;
+
+      await saveUserCredentials(email, password);
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => MainPage(),
+          builder: (context) => MainScreen(),
         ),
       );
     } else {
@@ -123,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                   width: isWeb ? 500 : double.infinity,
                   height: 50,
                   child: ElevatedButton(
-                    onPressed: _login,
+                    onPressed: _signin,
                     style: ElevatedButton.styleFrom(
                       foregroundColor: deepBlueColor,
                       backgroundColor: normalBlueColor,
@@ -149,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const SignUpPage()),
+                            builder: (context) => const SignUpScreen()),
                       );
                     },
                     style: ElevatedButton.styleFrom(
