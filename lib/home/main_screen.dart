@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:precapstone/const/message_content.dart';
 import 'package:precapstone/send_message/check_image_screen.dart';
 import 'package:precapstone/send_message/create_image_screen.dart';
 import 'package:precapstone/send_message/input_phone_number_screen.dart';
 import 'package:precapstone/send_message/write_message_screen.dart';
-import '../message_record/record_query_screen.dart';
-import '../user_info/user_dashboard_screen.dart';
-import '../const/colors.dart';
+import 'package:precapstone/message_record/record_query_screen.dart';
+import 'package:precapstone/user_info/user_dashboard_screen.dart';
+import 'package:precapstone/const/colors.dart';
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class MainScreen extends StatefulWidget {
+  const MainScreen({super.key});
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   int _subIndex = 0; // 첫 번째 탭 내에서 페이지 구분
 
@@ -66,31 +65,29 @@ class _MainPageState extends State<MainPage> {
       // 첫 번째 탭에서는 _subIndex에 따라 페이지 구분
       switch (_subIndex) {
         case 0:
-          return CreateImagePage(navigateToCheckImage: _goToCheckImagePage);
+          return CreateImageScreen(navigateToCheckImage: _goToCheckImagePage);
         case 1:
-          return CheckImagePage(
+          return CheckImageScreen(
             navigateToWriteMessage: _goToWriteMessagePage,
             navigateToCrateImage: _backToCreateImagePage,
           );
         case 2:
-          return WriteMessagePage(
-            messageContent: currentMessageContent,
+          return WriteMessageScreen(
             navigateToCheckImage: _backToCheckImagePage,
             navigateToInputPhoneNumber: _goToInputPhoneNumberPage,
           );
         case 3:
-          return InputPhoneNumberPage(
+          return InputPhoneNumberScreen(
             navigateToWriteMessage: _backToWriteMessagePage,
             navigateToCrateImage: _backToCreateImagePage,
           );
         default:
-          return CreateImagePage(navigateToCheckImage: _goToCheckImagePage);
+          return CreateImageScreen(navigateToCheckImage: _goToCheckImagePage);
       }
     } else if (_selectedIndex == 1) {
-      // 두번째 페이지
-      return const RecordQueryPage();
+      return const RecordQueryScreen();
     } else {
-      return const UserDashboardPage();
+      return const UserDashboardScreen();
     }
   }
 

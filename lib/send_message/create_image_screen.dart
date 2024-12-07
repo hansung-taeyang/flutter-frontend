@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:precapstone/const/colors.dart';
 import 'package:http/http.dart' as http;
-import 'package:precapstone/const/message_content.dart';
 import 'dart:convert';
 import 'package:precapstone/const/server_address.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class CreateImagePage extends StatefulWidget {
+class CreateImageScreen extends StatefulWidget {
   final VoidCallback navigateToCheckImage;
 
-  const CreateImagePage({
+  const CreateImageScreen({
     super.key,
     required this.navigateToCheckImage,
   });
 
   @override
-  _CreateImagePageState createState() => _CreateImagePageState();
+  _CreateImageScreenState createState() => _CreateImageScreenState();
 }
 
-class _CreateImagePageState extends State<CreateImagePage> {
+class _CreateImageScreenState extends State<CreateImageScreen> {
   String? selectStyle;
-  String? imageUrl;
   String? imgStyle;
   Map<String, String> styles = {
     '미니멀리즘 스타일': 'minimalist',
@@ -34,6 +32,21 @@ class _CreateImagePageState extends State<CreateImagePage> {
   final TextEditingController bookCategoryController = TextEditingController();
   final TextEditingController bookIntroductionController =
       TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _clearSharedPreferences(); // 페이지 로드 시 데이터 초기화
+  }
+
+  /// SharedPreferences에 저장된 데이터 초기화
+  Future<void> _clearSharedPreferences() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('currentImgUrl');
+    await prefs.remove('currentMessageContent');
+    await prefs.remove('currentSender');
+    await prefs.remove('currentReceiverArray');
+  }
 
   Future<void> sendDataAndNavigate() async {
     final url = Uri.parse('http://$address/v1/image');
@@ -84,7 +97,7 @@ class _CreateImagePageState extends State<CreateImagePage> {
           'Content-Type': 'application/json',
         },
         body: json.encode({
-          'prompt': intro + " " + category,
+          'prompt': "$intro $category",
           'style': imgStyle,
         }),
       );
@@ -94,7 +107,8 @@ class _CreateImagePageState extends State<CreateImagePage> {
       if (response.statusCode == 200) {
         final imageUrl = responseData['url'];
         if (imageUrl != null) {
-          currentImgUrl = imageUrl;
+          // SharedPreferences에 이미지 URL 저장
+          await prefs.setString('currentImgUrl', imageUrl);
           widget.navigateToCheckImage();
         } else {
           throw Exception("잘못된 응답: 이미지 URL을 찾을 수 없음");

@@ -1,25 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:precapstone/const/colors.dart';
-import 'package:precapstone/const/message_content.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class WriteMessagePage extends StatelessWidget {
-  String messageContent = '';
+class WriteMessageScreen extends StatelessWidget {
   final VoidCallback navigateToCheckImage;
-
   final VoidCallback navigateToInputPhoneNumber;
-
   final TextEditingController messageContentController =
       TextEditingController();
 
-  WriteMessagePage({
+  WriteMessageScreen({
     super.key,
-    required this.messageContent,
     required this.navigateToCheckImage,
     required this.navigateToInputPhoneNumber,
   });
 
+  Future<void> _saveMessageContent(String value) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('currentMessageContent', value);
+  }
+
+  Future<void> _loadMessageContent() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedContent = prefs.getString('currentMessageContent') ?? '';
+    messageContentController.text = savedContent;
+  }
+
   @override
   Widget build(BuildContext context) {
+    // 메시지 내용을 SharedPreferences에서 로드
+    _loadMessageContent();
+
     return LayoutBuilder(
       builder: (context, constraints) {
         var screenSize = MediaQuery.of(context).size;
@@ -43,20 +53,14 @@ class WriteMessagePage extends StatelessWidget {
                         ? screenSize.height * 0.5
                         : screenSize.height * 0.7,
                     child: TextField(
-                      controller: messageContentController
-                        ..text = currentMessageContent.isNotEmpty
-                            ? currentMessageContent
-                            : '', // 초기 값 설정
+                      controller: messageContentController,
                       maxLines: 19,
                       maxLength: 900,
                       onChanged: (value) {
-                        currentMessageContent =
-                            value; // 입력값을 currentMessageContent에 저장
+                        _saveMessageContent(value); // SharedPreferences에 저장
                       },
                       decoration: InputDecoration(
-                        hintText: currentMessageContent.isEmpty
-                            ? '문자의 내용을 입력해주세요'
-                            : null,
+                        hintText: '문자의 내용을 입력해주세요',
                         filled: true,
                         fillColor: backgroundColor,
                         hoverColor: inputHoverColor,
@@ -91,12 +95,11 @@ class WriteMessagePage extends StatelessWidget {
                       const SizedBox(width: 12),
                       ElevatedButton(
                         onPressed: () {
-                          if ((messageContentController.text) == '') {
+                          if (messageContentController.text.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('메시지를 입력하세요')),
                             );
                           } else {
-                            // 메시지 내용이 비어있지 않다면
                             navigateToInputPhoneNumber();
                           }
                         },
