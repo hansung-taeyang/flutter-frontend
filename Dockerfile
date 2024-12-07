@@ -13,7 +13,7 @@ RUN flutter doctor
 
 WORKDIR /app
 COPY . .
-RUN echo 'const address = "54.180.237.192:80";' > lib/const/server_address.dart
+RUN echo 'const address = "localhost:8888";' > lib/const/server_address.dart
 RUN flutter pub get
 RUN flutter build web
 
