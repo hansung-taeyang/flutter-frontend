@@ -1,5 +1,10 @@
 # ✨READ:ME
- 한성대학교 SW프리캡스톤디자인 팀프로젝트 (기업 연계 프로젝트, 팀프로젝트) <br><br>
+ 한성대학교 SW프리캡스톤디자인 팀프로젝트 (기업 연계 프로젝트, 팀프로젝트) <br>
+ > 제 1회 한성SW중심대학 페스티벌 캡스톤 전시회 참여
+ > 
+ > <img src="https://github.com/user-attachments/assets/bbc9ad77-c368-43bd-bb45-c7424910338d">
+ 
+ <br><br>
 
 # ✨Language & Framework & Tool
 <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"> <img src="https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white"> <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white"> <img src="https://img.shields.io/badge/Visual_Studio_Code-0078D4?style=for-the-badge&logo=visual%20studio%20code&logoColor=white"> <img src="https://img.shields.io/badge/Android_Studio-3DDC84?style=for-the-badge&logo=android-studio&logoColor=white"> <img src="https://img.shields.io/badge/figma-F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white"> <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white" alt="Notion"/>
